@@ -33,11 +33,10 @@ public class StudentDAO {
             conn = new DBContext().getConnection();
             //thuc thi cau lenh query vao database
             ps = conn.prepareStatement(query);
-            // khi chung ta lay ra cai gi hay select cai gi thi no se tra ve 1 resultSet
-            //khi lay ra cai gi thi la executeQuery , lay ra cai gi o day k lam thay doi database
+            // tra ve ResultSet khi va chi khi select ra thoi
             rs = ps.executeQuery();
             while (rs.next()) {
-                Student student = new Student(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getDouble(4), rs.getInt(4));
+                Student student = new Student(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getDouble(4), rs.getInt(5));
                 list.add(student);
             }
         } catch (Exception ex) {
@@ -46,13 +45,142 @@ public class StudentDAO {
         return list;
     }
     
+    //lay ra student co id=5
+    public Student getStudentHaveId5() {
+        try {
+            //viet cau query
+            String query = "select * from Student where id=5";
+            //ket noi voi database
+            conn = new DBContext().getConnection();
+            //thuc thi cau lenh query vao database
+            ps = conn.prepareStatement(query);
+            // tra ve ResultSet khi va chi khi select ra thoi
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                Student student = new Student(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getDouble(4), rs.getInt(5));
+                return student;
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(StudentDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
     
-    public static void main(String[] args) {
-       StudentDAO studentDAO = new StudentDAO();
-       ArrayList<Student> list = studentDAO.getAllStudents();
-        for (Student student : list) {
-            System.out.println(student);
+    //lay ra student co id=6
+    public Student getStudentHaveId6() {
+        try {
+            //viet cau query
+            String query = "select * from Student where id=6";
+            //ket noi voi database
+            conn = new DBContext().getConnection();
+            //thuc thi cau lenh query vao database
+            ps = conn.prepareStatement(query);
+            // tra ve ResultSet khi va chi khi select ra thoi
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                Student student = new Student(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getDouble(4), rs.getInt(5));
+                return student;
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(StudentDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public Student getStudentById(int id) {
+        try {
+            //viet cau query
+            String query = "select * from Student where id=?";
+            //ket noi voi database
+            conn = new DBContext().getConnection();
+            //thuc thi cau lenh query vao database
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, id);
+            // tra ve ResultSet khi va chi khi select ra thoi
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                Student student = new Student(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getDouble(4), rs.getInt(5));
+                return student;
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(StudentDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    
+
+    //insert 
+    public void insert(Student student) {
+        try {
+            //viet query de choc vao db
+            String query = "INSERT INTO [dbo].[Student]\n"
+                    + "           ([name]\n"
+                    + "           ,[age]\n"
+                    + "           ,[mark]\n"
+                    + "           ,[classid])\n"
+                    + "     VALUES\n"
+                    + "           (?,?,?,?)";
+            //kiem tra ket noi
+            conn = new DBContext().getConnection();
+            //truy xuat vao db chuan bi thuc thi cau lenh
+            ps = conn.prepareStatement(query);
+            ps.setString(1, student.getName());
+            ps.setInt(2, student.getAge());
+            ps.setDouble(3, student.getMark());
+            ps.setInt(4, student.getClassId());
+            ps.executeUpdate();
+        } catch (Exception ex) {
+            Logger.getLogger(StudentDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    //update
+    public void update(Student student) {
+        try {
+            //viet query de choc vao db
+            String query = "UPDATE [dbo].[Student]\n"
+                    + "   SET [name] = ?\n"
+                    + "      ,[age] = ?\n"
+                    + "      ,[mark] = ?\n"
+                    + "      ,[classid] = ?\n"
+                    + " WHERE id = ?";
+            //kiem tra ket noi
+            conn = new DBContext().getConnection();
+            //truy xuat vao db chuan bi thuc thi cau lenh
+            ps = conn.prepareStatement(query);
+            ps.setString(1, student.getName());
+            ps.setInt(2, student.getAge());
+            ps.setDouble(3, student.getMark());
+            ps.setInt(4, student.getClassId());
+            ps.setInt(5, student.getId());
+            ps.executeUpdate();
+        } catch (Exception ex) {
+            Logger.getLogger(StudentDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+
+    //delete
+    public void delete(int id) {
+        try {
+            //viet query de choc vao db
+            String query = "DELETE FROM [dbo].[Student]\n"
+                    + "      WHERE id = ?";
+            //kiem tra ket noi
+            conn = new DBContext().getConnection();
+            //truy xuat vao db chuan bi thuc thi cau lenh
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (Exception ex) {
+            Logger.getLogger(StudentDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static void main(String[] args) {
+        StudentDAO sdao = new StudentDAO();
+        Student s = sdao.getStudentById(6);
+        System.out.println(s);
+    }
 }
