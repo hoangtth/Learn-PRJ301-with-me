@@ -8,6 +8,14 @@
         <servlet-name>CreateStudentController</servlet-name>
         <servlet-class>controller.CreateStudentController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteStudentController</servlet-name>
+        <servlet-class>controller.DeleteStudentController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateStudentController</servlet-name>
+        <servlet-class>controller.UpdateStudentController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ListStudentController</servlet-name>
         <url-pattern>/list-students</url-pattern>
@@ -15,6 +23,14 @@
     <servlet-mapping>
         <servlet-name>CreateStudentController</servlet-name>
         <url-pattern>/create</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteStudentController</servlet-name>
+        <url-pattern>/delete-student</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateStudentController</servlet-name>
+        <url-pattern>/update-student</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

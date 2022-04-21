@@ -76,6 +76,7 @@ public class CreateStudentController extends HttpServlet {
         Student student = new Student(0, name, age, mark, classId);
         
         new StudentDAO().create(student);
+        response.sendRedirect("list-students");
     }
 
     /**

@@ -11,6 +11,14 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+
+        <script type="text/javascript">
+            function doDelete(id) {
+                if (confirm("are U sure to delete student have id =" + id)) {
+                    window.location = "delete-student?studentId=" + id;
+                }
+            }
+        </script>
     </head>
     <body>
         <h2 style="color: red">List Student</h2>
@@ -34,7 +42,7 @@
                         <td>${S.age}</td>
                         <td>${S.mark}</td>
                         <td>${S.className}</td>
-                        <td><a href="#">Update</a>|<a href="#">Delete</a>  </td>
+                        <td><a href="update-student?studentId=${S.id}">Update</a>|<a onclick="doDelete('${S.id}')" href="#">Delete</a>  </td>
                     </tr>
                 </c:forEach>
             </tbody>
