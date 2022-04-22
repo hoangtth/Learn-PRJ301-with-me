@@ -8,6 +8,7 @@ package controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,7 +37,7 @@ public class HomeController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet HomeController</title>");            
+            out.println("<title>Servlet HomeController</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet HomeController at " + request.getContextPath() + "</h1>");
@@ -58,9 +59,23 @@ public class HomeController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        if(session.getAttribute("account") != null){
+        if (session.getAttribute("account") != null) {
             request.getRequestDispatcher("home.jsp").forward(request, response);
-        }else{
+        } else {
+            Cookie[] cookies = request.getCookies();
+            String user = null;
+            String pass = null;
+            for (Cookie cooky : cookies) {
+                if (cooky.getName().equals("username")) {
+                    user = cooky.getValue();
+                }
+                if (cooky.getName().equals("password")) {
+                    pass = cooky.getValue();
+                }
+            }
+            if(user != null && pass != null){
+                request.getRequestDispatcher("home.jsp").forward(request, response);
+            }
             response.sendRedirect("login");
         }
     }

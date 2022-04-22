@@ -13,5 +13,6 @@
     </head>
     <body>
         <h1>day la trang chu!</h1>
+        <a href="logout">Logout</a>
     </body>
 </html>

@@ -5,11 +5,11 @@ package controller;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import dal.AccountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,7 +21,6 @@ import model.Account;
  * @author Admin
  */
 public class LoginController extends HttpServlet {
-
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -35,7 +34,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       request.getRequestDispatcher("login.jsp").forward(request, response);
+        request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 
     /**
@@ -54,10 +53,18 @@ public class LoginController extends HttpServlet {
         String remember = request.getParameter("remember");
         Account account = new AccountDAO().check(username, password);
         HttpSession session = request.getSession();
-        if(account != null){
+        if (account != null) {
             session.setAttribute("account", account);
+            if (remember != null) {
+                Cookie uCookie = new Cookie("username", username);
+                uCookie.setMaxAge(10);
+                Cookie pCookie = new Cookie("password", password);
+                pCookie.setMaxAge(10);
+                response.addCookie(uCookie);
+                response.addCookie(pCookie);
+            }
             response.sendRedirect("home");
-        }else{
+        } else {
             request.setAttribute("err", "Username and password is not exist");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
